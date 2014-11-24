@@ -1,0 +1,8 @@
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\bin\Debug\EasySQL.dll
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\bin\Debug\EasySQL.pdb
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\bin\Debug\EasySQL.xml
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\obj\Debug\EasySQL.Resources.resources
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\obj\Debug\EasySQL.vbproj.GenerateResource.Cache
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\obj\Debug\EasySQL.dll
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\obj\Debug\EasySQL.xml
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\obj\Debug\EasySQL.pdb
