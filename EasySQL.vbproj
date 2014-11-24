@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3D7444E5-A7A2-4DAE-9263-A6F7C19D64AB}</ProjectGuid>
+    <ProjectGuid>{9B6C726C-6B28-44EC-820D-D7C3EFCD2980}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>EasySQL</RootNamespace>
     <AssemblyName>EasySQL</AssemblyName>
