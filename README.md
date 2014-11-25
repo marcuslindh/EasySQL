@@ -77,3 +77,19 @@ Using com = sql.Delete.From("TableName").Where("ID", SqlDbType.Int, SQLBuilder.Q
     End If
 End Using
 ```
+
+###Update
+```vb.net
+Dim db As SqlConnection()
+Dim sql As New SQLBuilder
+    
+Using com = sql.Update.From("TableName"). _
+    Column("Name", SqlDbType.NVarChar, "Marcus"). _
+    Column("lastName", SqlDbType.NVarChar, "Lindh"). _
+    Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.Equal, 1).GetSqlCommand()
+
+    If com.ExecuteNonQuery >= 1 Then
+        Trace.WriteLine("Updated row(s) in db")
+    End If
+End Using
+```
