@@ -64,3 +64,16 @@ Using com = sql.Insert.Column("Name", SqlDbType.NVarChar, "Marcus"). _
     End If
 End Using
 ```
+
+###Delete
+```vb.net
+Dim db As SqlConnection()
+Dim sql As New SQLBuilder
+    
+Using com = sql.Delete.From("TableName").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.Equal, 1).GetSqlCommand()
+
+    If com.ExecuteNonQuery >= 1 Then
+        Trace.WriteLine("Deleted row(s) in db")
+    End If
+End Using
+```
