@@ -50,3 +50,17 @@ Using com = sql.Select("*").From("tableName"). _
     End Using
 End Using
 ```
+
+###Insert
+```vb.net
+Dim db As SqlConnection()
+Dim sql As New SQLBuilder
+    
+Using com = sql.Insert.Column("Name", SqlDbType.NVarChar, "Marcus"). _
+    Column("Lastname", SqlDbType.NVarChar, "lindh").Database(db).GetSqlCommand()
+
+    If com.ExecuteNonQuery >= 1 Then
+        Trace.WriteLine("Added row in db")
+    End If
+End Using
+```
