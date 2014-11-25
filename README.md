@@ -8,6 +8,7 @@ Create sql querys Easy in .net for System.Data.SqlClient
 ###Select
 
 ```vb.net
+Dim db As SqlConnection()
 dim sql as new SQLBuilder
 
 sql.Select("*").From("tableName").Database(db).GetSQL()
@@ -21,6 +22,7 @@ SELECT * FROM tableName
 ###Select Where
 
 ```vb.net
+Dim db As SqlConnection()
 dim sql as new SQLBuilder
 
 sql.Select("*").From("tableName").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.Equal, 1).Database(db).GetSQL()
@@ -36,7 +38,10 @@ SELECT * FROM tableName WHERE ID = @A
 Dim db As SqlConnection()
 Dim sql As New SQLBuilder
     
-Using com = sql.Select("*").From("tableName").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.Equal, 1).Database(db).GetSqlCommand
+Using com = sql.Select("*").From("tableName"). _
+    Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.Equal, 1). _
+    Database(db).GetSqlCommand
+        
     Using dr As SqlDataReader = com.ExecuteReader
         While dr.Read
             Trace.WriteLine(dr("Name"))
