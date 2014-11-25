@@ -30,3 +30,18 @@ will return and use SqlParameter for fields
 ```sql
 SELECT * FROM tableName WHERE ID = @A
 ```
+
+###Get SqlCommand
+```vb.net
+Dim db As SqlConnection()
+Dim sql As New SQLBuilder
+    
+Using com = sql.Select("*").From("tableName").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.Equal, 1).Database(db).GetSqlCommand
+    Using dr As SqlDataReader = com.ExecuteReader
+        While dr.Read
+            Trace.WriteLine(dr("Name"))
+            Trace.WriteLine(dr("Lastname"))
+        End While
+    End Using
+End Using
+```
