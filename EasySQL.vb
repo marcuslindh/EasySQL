@@ -176,7 +176,7 @@ Public Class SQLBuilder
 
 
 
-    Private Function Generate_GetSQL_Where(ByRef sql As StringBuilder)
+    Private Sub Generate_GetSQL_Where(ByRef sql As StringBuilder)
         Dim isFirst = True
         For Each col In _Columns
             If col.isWhere Then
@@ -254,7 +254,7 @@ Public Class SQLBuilder
                 End If
             End If
         Next
-    End Function
+    End Sub
 
     Private Sub Generate_GetSQL_SELECT(ByRef sql As StringBuilder)
         sql.Append("SELECT ")
