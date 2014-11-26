@@ -350,7 +350,13 @@ Public Class SQLBuilder
                 If Not col.NoType = True Then
 
                     If col.Operation = QueryOperation.IN Then
-                        Dim items = CType(col.Value, List(Of Object))
+                        Dim items
+                        Try
+                            items = CType(col.Value, List(Of Object))
+                        Catch ex As Exception
+                            Throw New Exception("EasySQL: Can not list values in the Where statement (QueryOperation.IN)")
+                        End Try
+
 
                         For i As Integer = 0 To items.Count - 1
                             col.ParameterNames.Add(GetSecureName())
