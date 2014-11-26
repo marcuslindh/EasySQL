@@ -84,6 +84,7 @@ Public Class SQLBuilder
 
         Return sql
     End Function
+
     Public Function From(Name As String) As SQLBuilder
         Dim sql As New SQLBuilder
         sql._Type = Me._Type
@@ -94,6 +95,7 @@ Public Class SQLBuilder
 
         Return sql
     End Function
+
     Public Function Where(ColumnName As String, Type As SqlDbType, Operation As QueryOperation, Value As Object, LogicalOperator As QueryLogicalOperator) As SQLBuilder
         Dim sql As New SQLBuilder
         sql._Type = Me._Type
