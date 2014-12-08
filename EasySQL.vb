@@ -30,6 +30,7 @@ Public Class SQLBuilder
     Public Enum QueryLogicalOperator
         [And] = 1
         [OR] = 2
+        GroupBy = 3
     End Enum
 
 
@@ -154,6 +155,19 @@ Public Class SQLBuilder
         sql._Command = Me._Command
 
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .NoType = True, .NoValue = True})
+
+        Return sql
+    End Function
+
+    Public Function GroupBy(ColumnName As String) As SQLBuilder
+        Dim sql As New SQLBuilder
+        sql._Type = Me._Type
+        sql._Columns = Me._Columns
+        sql._TableName = Me._TableName
+        sql._Database = Me._Database
+        sql._Command = Me._Command
+
+        sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .NoType = True, .NoValue = True, .LogicalOperator = QueryLogicalOperator.GroupBy})
 
         Return sql
     End Function
