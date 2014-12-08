@@ -285,7 +285,7 @@ Public Class SQLBuilder
             End If
         Next
 
-        sql.Append(" From ")
+        sql.Append(" FROM ")
         sql.Append(_TableName)
 
 
