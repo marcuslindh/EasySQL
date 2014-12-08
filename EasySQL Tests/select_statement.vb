@@ -30,4 +30,30 @@ Imports EasySQL
         Assert.AreEqual(sql.Select.Column("*").From("TestTable").GetSQL, "SELECT * FROM TestTable")
     End Sub
 
+
+    <TestMethod()> Public Sub select_statement_Where_Equal()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.Equal, 1).GetSQL, "SELECT * FROM TestTable WHERE ID = @A")
+    End Sub
+
+    <TestMethod()> Public Sub select_statement_Where_GreaterThan()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.GreaterThan, 1).GetSQL, "SELECT * FROM TestTable WHERE ID > @A")
+    End Sub
+
+    <TestMethod()> Public Sub select_statement_Where_GreaterThanOrEqualTo()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.GreaterThanOrEqualTo, 1).GetSQL, "SELECT * FROM TestTable WHERE ID >= @A")
+    End Sub
+
+    <TestMethod()> Public Sub select_statement_Where_LessThan()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.LessThan, 1).GetSQL, "SELECT * FROM TestTable WHERE ID < @A")
+    End Sub
+
+    <TestMethod()> Public Sub select_statement_Where_LessThanOrEqualTo()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.LessThanOrEqualTo, 1).GetSQL, "SELECT * FROM TestTable WHERE ID <= @A")
+    End Sub
+
 End Class
