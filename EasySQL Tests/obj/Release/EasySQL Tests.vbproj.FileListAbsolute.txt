@@ -1,0 +1,12 @@
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\bin\Release\EasySQL Tests.dll
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\bin\Release\EasySQL Tests.pdb
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\bin\Release\EasySQL Tests.xml
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\bin\Release\EasySQL.dll
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\bin\Release\EasySQL.pdb
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\bin\Release\EasySQL.xml
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\obj\Release\EasySQL Tests.vbprojResolveAssemblyReference.cache
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\obj\Release\EasySQL_Tests.Resources.resources
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\obj\Release\EasySQL Tests.vbproj.GenerateResource.Cache
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\obj\Release\EasySQL Tests.dll
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\obj\Release\EasySQL Tests.xml
+C:\Users\marlin\Dropbox\Jobb\Github\EasySQL\EasySQL Tests\obj\Release\EasySQL Tests.pdb
