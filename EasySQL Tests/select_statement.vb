@@ -56,4 +56,16 @@ Imports EasySQL
         Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.LessThanOrEqualTo, 1).GetSQL, "SELECT * FROM TestTable WHERE ID <= @A")
     End Sub
 
+    <TestMethod()> Public Sub select_statement_Where_Like()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("Name", SqlDbType.NVarChar, SQLBuilder.QueryOperation.Like, "Ma%").GetSQL, "SELECT * FROM TestTable WHERE Name LIKE @A")
+    End Sub
+
+
+    <TestMethod()> Public Sub select_statement_GroupBy()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Select.Column("*").From("TestTable").GroupBy("Name").GetSQL, "SELECT * FROM TestTable GROUP BY Name")
+    End Sub
+
+
 End Class
