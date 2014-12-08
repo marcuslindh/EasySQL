@@ -288,6 +288,8 @@ Public Class SQLBuilder
         sql.Append(" From ")
         sql.Append(_TableName)
 
+
+
         Generate_GetSQL_Where(sql)
     End Sub
 
