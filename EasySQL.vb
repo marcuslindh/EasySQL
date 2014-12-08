@@ -280,14 +280,31 @@ Public Class SQLBuilder
                     sql.Append(col.ColumnName)
                     isFirst = False
                 Else
-                    sql.Append(", " & col.ColumnName)
+                    If Not col.LogicalOperator = QueryLogicalOperator.GroupBy Then
+                        sql.Append(", " & col.ColumnName)
+                    End If
                 End If
+
             End If
         Next
 
         sql.Append(" FROM ")
         sql.Append(_TableName)
 
+
+
+        isFirst = True
+
+        For Each col In _Columns
+            If col.LogicalOperator = QueryLogicalOperator.GroupBy Then
+                If isFirst Then
+                    isFirst = False
+                    sql.Append(" GROUP BY ")
+                End If
+
+                sql.Append(col.ColumnName)
+            End If
+        Next
 
 
         Generate_GetSQL_Where(sql)
