@@ -292,6 +292,7 @@ Public Class SQLBuilder
         sql.Append(_TableName)
 
 
+        Generate_GetSQL_Where(sql)
 
         isFirst = True
 
@@ -305,9 +306,6 @@ Public Class SQLBuilder
                 sql.Append(col.ColumnName)
             End If
         Next
-
-
-        Generate_GetSQL_Where(sql)
     End Sub
 
     Private Sub Generate_GetSQL_INSERT(ByRef sql As StringBuilder)
