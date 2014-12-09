@@ -67,5 +67,10 @@ Imports EasySQL
         Assert.AreEqual(sql.Select.Column("*").From("TestTable").GroupBy("Name").GetSQL, "SELECT * FROM TestTable GROUP BY Name")
     End Sub
 
+    <TestMethod()> Public Sub select_statement_Where_GroupBy()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.NVarChar, SQLBuilder.QueryOperation.GreaterThan, 1).GroupBy("Name").GetSQL, "SELECT * FROM TestTable WHERE ID > @A GROUP BY Name")
+    End Sub
+
 
 End Class
