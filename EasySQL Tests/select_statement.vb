@@ -72,5 +72,11 @@ Imports EasySQL
         Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.NVarChar, SQLBuilder.QueryOperation.GreaterThan, 1).GroupBy("Name").GetSQL, "SELECT * FROM TestTable WHERE ID > @A GROUP BY Name")
     End Sub
 
+    <TestMethod()> Public Sub select_statement_COUNT_Where_GroupBy()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Select.Column("Year").Column("COUNT(*) TotalCount").From("TestTable").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.GreaterThan, 1).GroupBy("Year").GetSQL, "SELECT Year, COUNT(*) TotalCount FROM TestTable WHERE ID > @A GROUP BY Year")
+    End Sub
+
+
 
 End Class
