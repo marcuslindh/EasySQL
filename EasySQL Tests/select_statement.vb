@@ -61,6 +61,12 @@ Imports EasySQL
         Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("Name", SqlDbType.NVarChar, SQLBuilder.QueryOperation.Like, "Ma%").GetSQL, "SELECT * FROM TestTable WHERE Name LIKE @A")
     End Sub
 
+    <TestMethod()> Public Sub select_statement_Where_IN()
+        Dim sql As New SQLBuilder
+        Dim ids As Integer() = {1, 2, 3, 4}
+        Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.NVarChar, SQLBuilder.QueryOperation.IN, ids).GetSQL, "SELECT * FROM TestTable WHERE ID IN (@A, @B, @C, @D)")
+    End Sub
+
 
     <TestMethod()> Public Sub select_statement_GroupBy()
         Dim sql As New SQLBuilder
