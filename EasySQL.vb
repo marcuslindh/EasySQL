@@ -386,14 +386,32 @@ Public Class SQLBuilder
                         Dim items
                         Try
                             items = CType(col.Value, List(Of Object))
+
+
+                            For i As Integer = 0 To items.Count - 1
+                                col.ParameterNames.Add(GetSecureName())
+                            Next
                         Catch ex As Exception
-                            Throw New Exception("EasySQL: Can not list values in the Where statement (QueryOperation.IN)")
+                            Try
+                                items = CType(col.Value, Integer())
+
+                                For i As Integer = 0 To items.Length - 1
+                                    col.ParameterNames.Add(GetSecureName())
+                                Next
+                            Catch ex2 As Exception
+                                Try
+                                    items = CType(col.Value, String())
+
+                                    For i As Integer = 0 To items.Length - 1
+                                        col.ParameterNames.Add(GetSecureName())
+                                    Next
+                                Catch ex3 As Exception
+                                    Throw New Exception("EasySQL: you can only use types List(Of Object), Integer(), String() (QueryOperation.IN)")
+                                End Try
+                            End Try
                         End Try
 
 
-                        For i As Integer = 0 To items.Count - 1
-                            col.ParameterNames.Add(GetSecureName())
-                        Next
                     Else
                         col.ParameterName = GetSecureName()
                     End If
