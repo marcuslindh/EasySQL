@@ -11,6 +11,9 @@ Public Class SQLBuilder
 
     Private Property SecureParameterNames As String() = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA BB CC DD EE FF GG HH II JJ KK LL MM NN OO PP QQ RR SS TT UU VV WW XX YY ZZ AB AC AD AE AF AG AH AI AJ AK AL AM AN AO AP AQ AR AS AT AU AV AW AX AY AZ".Split(" ")
     Private Property SecureParameterNamesLocation As Integer = 0
+
+    Private Property _Test As Boolean = False
+
     Public Enum QueryType
         [Select] = 1
         Insert = 2
@@ -86,6 +89,17 @@ Public Class SQLBuilder
         Return sql
     End Function
 
+    Public Function Testing() As SQLBuilder
+        Dim sql As New SQLBuilder
+        sql._Type = Me._Type
+        sql._Columns = Me._Columns
+        sql._TableName = Me._TableName
+        sql._Database = Me._Database
+        sql._Command = Me._Command
+        sql._Test = True
+        Return sql
+    End Function
+
     Public Function From(Name As String) As SQLBuilder
         Dim sql As New SQLBuilder
         sql._Type = Me._Type
@@ -93,6 +107,7 @@ Public Class SQLBuilder
         sql._TableName = Name
         sql._Database = Me._Database
         sql._Command = Me._Command
+        sql._Test = Me._Test
 
         Return sql
     End Function
@@ -104,6 +119,7 @@ Public Class SQLBuilder
         sql._TableName = Me._TableName
         sql._Database = Me._Database
         sql._Command = Me._Command
+        sql._Test = Me._Test
 
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .Type = Type, .Value = Value, .isWhere = True, .Operation = Operation, .LogicalOperator = LogicalOperator})
 
@@ -116,6 +132,7 @@ Public Class SQLBuilder
         sql._TableName = Me._TableName
         sql._Database = Me._Database
         sql._Command = Me._Command
+        sql._Test = Me._Test
 
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .Type = Type, .Value = Value, .isWhere = True, .Operation = Operation})
 
@@ -129,6 +146,7 @@ Public Class SQLBuilder
         sql._TableName = Me._TableName
         sql._Database = Me._Database
         sql._Command = Me._Command
+        sql._Test = Me._Test
 
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .Type = Type, .Value = Value})
 
@@ -141,6 +159,7 @@ Public Class SQLBuilder
         sql._TableName = Me._TableName
         sql._Database = Me._Database
         sql._Command = Me._Command
+        sql._Test = Me._Test
 
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .NoValue = True})
 
@@ -153,7 +172,7 @@ Public Class SQLBuilder
         sql._TableName = Me._TableName
         sql._Database = Me._Database
         sql._Command = Me._Command
-
+        sql._Test = Me._Test
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .NoType = True, .NoValue = True})
 
         Return sql
@@ -166,6 +185,7 @@ Public Class SQLBuilder
         sql._TableName = Me._TableName
         sql._Database = Me._Database
         sql._Command = Me._Command
+        sql._Test = Me._Test
 
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .NoType = True, .NoValue = True, .LogicalOperator = QueryLogicalOperator.GroupBy})
 
@@ -179,6 +199,7 @@ Public Class SQLBuilder
         sql._TableName = Me._TableName
         sql._Database = db
         sql._Command = Me._Command
+        sql._Test = Me._Test
 
         Return sql
     End Function
@@ -188,7 +209,20 @@ Public Class SQLBuilder
         Return SecureParameterNames(SecureParameterNamesLocation - 1)
     End Function
 
+    Private Function CheckForSyntaxErrors() As String
 
+        If _TableName = "" Then
+            Return "No table added (.From(""tabelname""))"
+        End If
+
+        If _Test = False Then
+            If Not _Database.State = ConnectionState.Open Then
+                Return "No Database added (.Database(DB))"
+            End If
+        End If
+
+        Return ""
+    End Function
 
     Private Sub Generate_GetSQL_Where(ByRef sql As StringBuilder)
         Dim isFirst = True
@@ -260,11 +294,25 @@ Public Class SQLBuilder
                             sql.Append(" <= ")
                         Case QueryOperation.Like
                             sql.Append(" LIKE ")
-                            'Case QueryOperation.IN
-                            '    sql.Append(" IN (")
+                        Case QueryOperation.IN
+                            sql.Append(" IN (")
                     End Select
 
-                    sql.Append("@" & col.ParameterName)
+                    If col.Operation = QueryOperation.IN Then
+                        Dim _First As Boolean = True
+                        For Each perm In col.ParameterNames
+                            If _First Then
+                                sql.Append("@" & perm)
+                                _First = False
+                            Else
+                                sql.Append(", @" & perm)
+                            End If
+                        Next
+                        sql.Append(")")
+
+                    Else
+                        sql.Append("@" & col.ParameterName)
+                    End If
                 End If
             End If
         Next
@@ -375,9 +423,17 @@ Public Class SQLBuilder
         Generate_GetSQL_Where(sql)
     End Sub
 
+
+
     Public ReadOnly Property GetSQL As String
         Get
             Dim sql As New StringBuilder
+
+            Dim SyntaxErrors As String = CheckForSyntaxErrors()
+            If Not SyntaxErrors = "" Then
+                Throw New Exception(SyntaxErrors)
+            End If
+
 
             For Each col In _Columns
                 If Not col.NoType = True Then
