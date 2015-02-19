@@ -216,9 +216,13 @@ Public Class SQLBuilder
         End If
 
         If _Test = False Then
-            If Not _Database.State = ConnectionState.Open Then
+            Try
+                If Not _Database.State = ConnectionState.Open Then
+                    Return "No Database added (.Database(DB))"
+                End If
+            Catch ex As Exception
                 Return "No Database added (.Database(DB))"
-            End If
+            End Try
         End If
 
         Return ""
