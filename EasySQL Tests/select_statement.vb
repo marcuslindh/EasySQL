@@ -93,6 +93,15 @@ Imports EasySQL
         Assert.AreEqual(sql.Select.Column("Year").Column("COUNT(*) TotalCount").From("TestTable").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.GreaterThan, 1).GroupBy("Year").Testing().GetSQL, "SELECT Year, COUNT(*) TotalCount FROM TestTable WHERE ID > @A GROUP BY Year")
     End Sub
 
+    <TestMethod()> Public Sub select_statement_OrderBy_Default()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Select("*").From("TestTable").OrderBy("Name").Testing.GetSQL, "SELECT * FROM TestTable ORDER BY Name ASC")
+    End Sub
+
+    <TestMethod()> Public Sub select_statement_OrderBy_descending()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Select("*").From("TestTable").OrderBy("Name", SQLBuilder.OrderByOrder.descending).Testing.GetSQL, "SELECT * FROM TestTable ORDER BY Name DESC")
+    End Sub
 
 
 End Class

@@ -399,6 +399,19 @@ Public Class SQLBuilder
                 sql.Append(col.ColumnName)
             End If
         Next
+
+        If Not _OrderByColumns = "" Then
+            sql.Append(" ORDER BY ")
+            sql.Append(_OrderByColumns)
+
+            Select Case _OrderBy_Order
+                Case OrderByOrder.ascending
+                    sql.Append(" ASC")
+                Case OrderByOrder.descending
+                    sql.Append(" DESC")
+            End Select
+
+        End If
     End Sub
 
     Private Sub Generate_GetSQL_INSERT(ByRef sql As StringBuilder)
@@ -536,8 +549,6 @@ Public Class SQLBuilder
             Return sql.ToString
         End Get
     End Property
-
-
 
     Public Function GetSqlCommand() As SqlCommand
 
