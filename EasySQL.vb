@@ -57,17 +57,19 @@ Public Class SQLBuilder
 
     Public Function [Select]() As SQLBuilder
         Dim sql As New SQLBuilder
+        InheritParameters(sql)
         sql._Type = QueryType.Select
-        sql._Database = Me._Database
-        sql._Command = Me._Command
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
 
         Return sql
     End Function
     Public Function [Select](Columns As String) As SQLBuilder
         Dim sql As New SQLBuilder
+        InheritParameters(sql)
         sql._Type = QueryType.Select
-        sql._Database = Me._Database
-        sql._Command = Me._Command
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
 
         If Columns.Contains(",") Then
             Dim s() As String = Columns.Split(",")
@@ -82,26 +84,29 @@ Public Class SQLBuilder
     End Function
     Public Function Insert() As SQLBuilder
         Dim sql As New SQLBuilder
+        InheritParameters(sql)
         sql._Type = QueryType.Insert
-        sql._Database = Me._Database
-        sql._Command = Me._Command
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
 
         Return sql
     End Function
     Public Function Delete() As SQLBuilder
         Dim sql As New SQLBuilder
+        InheritParameters(sql)
         sql._Type = QueryType.Delete
-        sql._Database = Me._Database
-        sql._Command = Me._Command
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
 
 
         Return sql
     End Function
     Public Function Update() As SQLBuilder
         Dim sql As New SQLBuilder
+        InheritParameters(sql)
         sql._Type = QueryType.Update
-        sql._Database = Me._Database
-        sql._Command = Me._Command
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
 
 
         Return sql
@@ -109,35 +114,38 @@ Public Class SQLBuilder
 
     Public Function Testing() As SQLBuilder
         Dim sql As New SQLBuilder
-        sql._Type = Me._Type
-        sql._Columns = Me._Columns
-        sql._TableName = Me._TableName
-        sql._Database = Me._Database
-        sql._Command = Me._Command
+        InheritParameters(sql)
+        'sql._Type = Me._Type
+        'sql._Columns = Me._Columns
+        'sql._TableName = Me._TableName
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
         sql._Test = True
         Return sql
     End Function
 
     Public Function From(Name As String) As SQLBuilder
         Dim sql As New SQLBuilder
-        sql._Type = Me._Type
-        sql._Columns = Me._Columns
+        InheritParameters(sql)
+        'sql._Type = Me._Type
+        'sql._Columns = Me._Columns
         sql._TableName = Name
-        sql._Database = Me._Database
-        sql._Command = Me._Command
-        sql._Test = Me._Test
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
+        'sql._Test = Me._Test
 
         Return sql
     End Function
 
     Public Function Where(ColumnName As String, Type As SqlDbType, Operation As QueryOperation, Value As Object, LogicalOperator As QueryLogicalOperator) As SQLBuilder
         Dim sql As New SQLBuilder
-        sql._Type = Me._Type
-        sql._Columns = Me._Columns
-        sql._TableName = Me._TableName
-        sql._Database = Me._Database
-        sql._Command = Me._Command
-        sql._Test = Me._Test
+        InheritParameters(sql)
+        'sql._Type = Me._Type
+        'sql._Columns = Me._Columns
+        'sql._TableName = Me._TableName
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
+        'sql._Test = Me._Test
 
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .Type = Type, .Value = Value, .isWhere = True, .Operation = Operation, .LogicalOperator = LogicalOperator})
 
@@ -145,12 +153,13 @@ Public Class SQLBuilder
     End Function
     Public Function Where(ColumnName As String, Type As SqlDbType, Operation As QueryOperation, Value As Object) As SQLBuilder
         Dim sql As New SQLBuilder
-        sql._Type = Me._Type
-        sql._Columns = Me._Columns
-        sql._TableName = Me._TableName
-        sql._Database = Me._Database
-        sql._Command = Me._Command
-        sql._Test = Me._Test
+        InheritParameters(sql)
+        'sql._Type = Me._Type
+        'sql._Columns = Me._Columns
+        'sql._TableName = Me._TableName
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
+        'sql._Test = Me._Test
 
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .Type = Type, .Value = Value, .isWhere = True, .Operation = Operation})
 
@@ -159,12 +168,13 @@ Public Class SQLBuilder
 
     Public Function Column(ColumnName As String, Type As SqlDbType, Value As Object) As SQLBuilder
         Dim sql As New SQLBuilder
-        sql._Type = Me._Type
-        sql._Columns = Me._Columns
-        sql._TableName = Me._TableName
-        sql._Database = Me._Database
-        sql._Command = Me._Command
-        sql._Test = Me._Test
+        InheritParameters(sql)
+        'sql._Type = Me._Type
+        'sql._Columns = Me._Columns
+        'sql._TableName = Me._TableName
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
+        'sql._Test = Me._Test
 
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .Type = Type, .Value = Value})
 
@@ -172,12 +182,13 @@ Public Class SQLBuilder
     End Function
     Public Function Column(ColumnName As String, Value As Object) As SQLBuilder
         Dim sql As New SQLBuilder
-        sql._Type = Me._Type
-        sql._Columns = Me._Columns
-        sql._TableName = Me._TableName
-        sql._Database = Me._Database
-        sql._Command = Me._Command
-        sql._Test = Me._Test
+        InheritParameters(sql)
+        'sql._Type = Me._Type
+        'sql._Columns = Me._Columns
+        'sql._TableName = Me._TableName
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
+        'sql._Test = Me._Test
 
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .NoValue = True})
 
@@ -185,12 +196,13 @@ Public Class SQLBuilder
     End Function
     Public Function Column(ColumnName As String) As SQLBuilder
         Dim sql As New SQLBuilder
-        sql._Type = Me._Type
-        sql._Columns = Me._Columns
-        sql._TableName = Me._TableName
-        sql._Database = Me._Database
-        sql._Command = Me._Command
-        sql._Test = Me._Test
+        InheritParameters(sql)
+        'sql._Type = Me._Type
+        'sql._Columns = Me._Columns
+        'sql._TableName = Me._TableName
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
+        'sql._Test = Me._Test
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .NoType = True, .NoValue = True})
 
         Return sql
@@ -198,12 +210,13 @@ Public Class SQLBuilder
 
     Public Function GroupBy(ColumnName As String) As SQLBuilder
         Dim sql As New SQLBuilder
-        sql._Type = Me._Type
-        sql._Columns = Me._Columns
-        sql._TableName = Me._TableName
-        sql._Database = Me._Database
-        sql._Command = Me._Command
-        sql._Test = Me._Test
+        InheritParameters(sql)
+        'sql._Type = Me._Type
+        'sql._Columns = Me._Columns
+        'sql._TableName = Me._TableName
+        'sql._Database = Me._Database
+        'sql._Command = Me._Command
+        'sql._Test = Me._Test
 
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .NoType = True, .NoValue = True, .LogicalOperator = QueryLogicalOperator.GroupBy})
 
@@ -211,18 +224,23 @@ Public Class SQLBuilder
     End Function
 
     Public Function OrderBy(Collumns As String, Optional ByVal Order As OrderByOrder = OrderByOrder.ascending) As SQLBuilder
-        _OrderByColumns = Collumns
-        _OrderBy_Order = Order
+        Dim sql As New SQLBuilder
+        InheritParameters(sql)
+        sql._OrderByColumns = Collumns
+        sql._OrderBy_Order = Order
+
+        Return sql
     End Function
 
     Public Function Database(db As SqlConnection) As SQLBuilder
         Dim sql As New SQLBuilder
-        sql._Type = Me._Type
-        sql._Columns = Me._Columns
-        sql._TableName = Me._TableName
-        sql._Database = db
-        sql._Command = Me._Command
-        sql._Test = Me._Test
+        InheritParameters(sql)
+        'sql._Type = Me._Type
+        'sql._Columns = Me._Columns
+        'sql._TableName = Me._TableName
+        'sql._Database = db
+        'sql._Command = Me._Command
+        'sql._Test = Me._Test
 
         Return sql
     End Function
