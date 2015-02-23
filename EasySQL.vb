@@ -8,6 +8,9 @@ Public Class SQLBuilder
     Private Property _TableName As String = ""
     Private Property _Database As SqlConnection
     Private Property _Command As SqlCommand
+    Private Property _OrderByColumns As String = ""
+    Private Property _OrderBy_Order As OrderByOrder = OrderByOrder.ascending
+
 
     Private Property SecureParameterNames As String() = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z AA BB CC DD EE FF GG HH II JJ KK LL MM NN OO PP QQ RR SS TT UU VV WW XX YY ZZ AB AC AD AE AF AG AH AI AJ AK AL AM AN AO AP AQ AR AS AT AU AV AW AX AY AZ".Split(" ")
     Private Property SecureParameterNamesLocation As Integer = 0
@@ -35,6 +38,21 @@ Public Class SQLBuilder
         [OR] = 2
         GroupBy = 3
     End Enum
+    Public Enum OrderByOrder
+        ascending = 1
+        descending = 2
+    End Enum
+
+    Private Sub InheritParameters(ByRef sql As SQLBuilder)
+        sql._Type = Me._Type
+        sql._Columns = Me._Columns
+        sql._TableName = Me._TableName
+        sql._Database = Me._Database
+        sql._Command = Me._Command
+        sql._Test = Me._Test
+        sql._OrderBy_Order = Me._OrderBy_Order
+        sql._OrderByColumns = Me._OrderByColumns
+    End Sub
 
 
     Public Function [Select]() As SQLBuilder
@@ -190,6 +208,11 @@ Public Class SQLBuilder
         sql._Columns.Add(New SQLBuilderColumn With {.ColumnName = ColumnName, .NoType = True, .NoValue = True, .LogicalOperator = QueryLogicalOperator.GroupBy})
 
         Return sql
+    End Function
+
+    Public Function OrderBy(Collumns As String, Optional ByVal Order As OrderByOrder = OrderByOrder.ascending) As SQLBuilder
+        _OrderByColumns = Collumns
+        _OrderBy_Order = Order
     End Function
 
     Public Function Database(db As SqlConnection) As SQLBuilder
