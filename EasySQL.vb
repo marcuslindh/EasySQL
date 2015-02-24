@@ -7,6 +7,7 @@ Public Class SQLBuilder
     Private Property _Columns As New List(Of SQLBuilderColumn)
     Private Property _TableName As String = ""
     Private Property _Database As SqlConnection
+    Private Property _DatabaseAdded As Boolean = False
     Private Property _Command As SqlCommand
     Private Property _OrderByColumns As String = ""
     Private Property _OrderBy_Order As OrderByOrder = OrderByOrder.ascending
@@ -48,6 +49,7 @@ Public Class SQLBuilder
         sql._Columns = Me._Columns
         sql._TableName = Me._TableName
         sql._Database = Me._Database
+        sql._DatabaseAdded = Me._DatabaseAdded
         sql._Command = Me._Command
         sql._Test = Me._Test
         sql._OrderBy_Order = Me._OrderBy_Order
@@ -238,7 +240,8 @@ Public Class SQLBuilder
         'sql._Type = Me._Type
         'sql._Columns = Me._Columns
         'sql._TableName = Me._TableName
-        'sql._Database = db
+        sql._Database = db
+        sql._DatabaseAdded = True
         'sql._Command = Me._Command
         'sql._Test = Me._Test
 
@@ -257,13 +260,9 @@ Public Class SQLBuilder
         End If
 
         If _Test = False Then
-            Try
-                If Not _Database.State = ConnectionState.Open Then
-                    Return "No Database added (.Database(DB))"
-                End If
-            Catch ex As Exception
+            If _DatabaseAdded = False Then
                 Return "No Database added (.Database(DB))"
-            End Try
+            End If
         End If
 
         Return ""
