@@ -248,6 +248,11 @@ Public Class SQLBuilder
         Return sql
     End Function
 
+    Public Function NewQuery() As SQLBuilder
+        Return New SQLBuilder
+    End Function
+
+
     Private Function GetSecureName() As String
         SecureParameterNamesLocation += 1
         Return SecureParameterNames(SecureParameterNamesLocation - 1)
