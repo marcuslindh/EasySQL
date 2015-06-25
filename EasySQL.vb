@@ -350,6 +350,7 @@ Public Class SQLBuilder
                     If col.Operation = QueryOperation.IN Then
                         Dim _First As Boolean = True
                         For Each perm In col.ParameterNames
+
                             If _First Then
                                 sql.Append("@" & perm)
                                 _First = False
@@ -561,7 +562,55 @@ Public Class SQLBuilder
         For Each col In _Columns
             If col.NoValue = False Then
 
-                _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterName, .SqlDbType = col.Type, .Value = col.Value})
+                If col.ParameterNames.Count > 0 Then
+
+
+
+                    Select Case col.Value.GetType.ToString
+
+                        Case "System.Collections.Generic.List´1[System.String]"
+                            Dim items As List(Of String) = CType(col.Value, List(Of String))
+
+                            For i As Integer = 0 To col.ParameterNames.Count - 1
+                                _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterNames(i), .SqlDbType = col.Type, .Value = items(i)})
+                            Next
+                        Case "System.Collections.Generic.List´1[System.Int32]"
+                            Dim items As List(Of Integer) = CType(col.Value, List(Of Integer))
+
+                            For i As Integer = 0 To col.ParameterNames.Count - 1
+                                _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterNames(i), .SqlDbType = col.Type, .Value = items(i)})
+                            Next
+                        Case "System.Collections.Generic.List´1[System.Object]"
+                            Dim items As List(Of Object) = CType(col.Value, List(Of Object))
+
+                            For i As Integer = 0 To col.ParameterNames.Count - 1
+                                _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterNames(i), .SqlDbType = col.Type, .Value = items(i)})
+                            Next
+                        Case "System.String[]"
+                            Dim items As String() = CType(col.Value, String())
+
+                            For i As Integer = 0 To col.ParameterNames.Count - 1
+                                _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterNames(i), .SqlDbType = col.Type, .Value = items(i)})
+                            Next
+                        Case "System.Int32[]"
+                            Dim items As Integer() = CType(col.Value, Integer())
+
+                            For i As Integer = 0 To col.ParameterNames.Count - 1
+                                _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterNames(i), .SqlDbType = col.Type, .Value = items(i)})
+                            Next
+                    End Select
+
+
+
+
+                    'For i As Integer = 0 To col.ParameterNames.Count - 1
+                    '    _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterName, .SqlDbType = col.Type, .Value = col.Value})
+                    'Next
+                Else
+                    _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterName, .SqlDbType = col.Type, .Value = col.Value})
+                End If
+
+
 
             End If
         Next
