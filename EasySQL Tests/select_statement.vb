@@ -30,7 +30,6 @@ Imports EasySQL
         Assert.AreEqual(sql.Select.Column("*").From("TestTable").Testing().GetSQL, "SELECT * FROM TestTable")
     End Sub
 
-
     <TestMethod()> Public Sub select_statement_Where_Equal()
         Dim sql As New SQLBuilder
         Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.Equal, 1).Testing().GetSQL, "SELECT * FROM TestTable WHERE ID = @A")
@@ -101,6 +100,12 @@ Imports EasySQL
     <TestMethod()> Public Sub select_statement_OrderBy_descending()
         Dim sql As New SQLBuilder
         Assert.AreEqual(sql.Select("*").From("TestTable").OrderBy("Name", SQLBuilder.OrderByOrder.descending).Testing.GetSQL, "SELECT * FROM TestTable ORDER BY Name DESC")
+    End Sub
+
+
+    <TestMethod()> Public Sub Update_statement_Where_Dub_ColumnName()
+        Dim sql As New SQLBuilder
+        Assert.AreEqual(sql.Update.Column("PageID", SqlDbType.Int, 1).From("Views").Where("PageID", SqlDbType.Int, SQLBuilder.QueryOperation.Equal, 1).Testing().GetSQL, "UPDATE Views SET PageID = @A WHERE PageID = @B")
     End Sub
 
 
