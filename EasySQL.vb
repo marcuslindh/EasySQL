@@ -504,31 +504,67 @@ Public Class SQLBuilder
                     If col.Operation = QueryOperation.IN Then
                         Dim items
                         Try
-                            items = CType(col.Value, List(Of Object))
 
-
-                            For i As Integer = 0 To items.Count - 1
-                                col.ParameterNames.Add(GetSecureName())
-                            Next
-                        Catch ex As Exception
-                            Try
-                                items = CType(col.Value, Integer())
-
-                                For i As Integer = 0 To items.Length - 1
-                                    col.ParameterNames.Add(GetSecureName())
-                                Next
-                            Catch ex2 As Exception
-                                Try
+                            Select Case col.Value.GetType.ToString
+                                Case "System.Collections.Generic.List´1[System.String]"
+                                    items = CType(col.Value, List(Of String))
+                                    For i As Integer = 0 To items.Count - 1
+                                        col.ParameterNames.Add(GetSecureName())
+                                    Next
+                                Case "System.Collections.Generic.List´1[System.Int32]"
+                                    items = CType(col.Value, List(Of Integer))
+                                    For i As Integer = 0 To items.Count - 1
+                                        col.ParameterNames.Add(GetSecureName())
+                                    Next
+                                Case "System.Collections.Generic.List´1[System.Object]"
+                                    items = CType(col.Value, List(Of Object))
+                                    For i As Integer = 0 To items.Count - 1
+                                        col.ParameterNames.Add(GetSecureName())
+                                    Next
+                                Case "System.String[]"
                                     items = CType(col.Value, String())
-
                                     For i As Integer = 0 To items.Length - 1
                                         col.ParameterNames.Add(GetSecureName())
                                     Next
-                                Catch ex3 As Exception
-                                    Throw New Exception("EasySQL: you can only use types List(Of Object), Integer(), String() (QueryOperation.IN)")
-                                End Try
-                            End Try
+                                Case "System.Int32[]"
+                                    items = CType(col.Value, Integer())
+                                    For i As Integer = 0 To items.Length - 1
+                                        col.ParameterNames.Add(GetSecureName())
+                                    Next
+                            End Select
+
+
+                        Catch ex As Exception
+                            Throw New Exception("EasySQL: you can only use types List(Of String), List(Of Integer), List(Of Object), Integer(), String() (QueryOperation.IN)")
                         End Try
+
+
+                        'Try
+                        '    items = CType(col.Value, List(Of Object))
+
+
+                        '    For i As Integer = 0 To items.Count - 1
+                        '        col.ParameterNames.Add(GetSecureName())
+                        '    Next
+                        'Catch ex As Exception
+                        '    Try
+                        '        items = CType(col.Value, Integer())
+
+                        '        For i As Integer = 0 To items.Length - 1
+                        '            col.ParameterNames.Add(GetSecureName())
+                        '        Next
+                        '    Catch ex2 As Exception
+                        '        Try
+                        '            items = CType(col.Value, String())
+
+                        '            For i As Integer = 0 To items.Length - 1
+                        '                col.ParameterNames.Add(GetSecureName())
+                        '            Next
+                        '        Catch ex3 As Exception
+                        '            Throw New Exception("EasySQL: you can only use types List(Of Object), Integer(), String() (QueryOperation.IN)")
+                        '        End Try
+                        '    End Try
+                        'End Try
 
 
                     Else
