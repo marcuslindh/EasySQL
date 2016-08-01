@@ -68,11 +68,17 @@ Imports EasySQL
 
     <TestMethod()> Public Sub select_statement_Where_IN2()
         Dim sql As New SQLBuilder
-        Dim ids As Integer() = {1, 2, 3, 4}
+        'Dim ids As Integer() = {1, 2, 3, 4}
 
         Dim names As String() = {"test1", "test2", "test3"}
 
         Assert.AreEqual(sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.Equal, 1).Where("Name", SqlDbType.NVarChar, SQLBuilder.QueryOperation.IN, names).Testing().GetSQL, "SELECT * FROM TestTable WHERE ID = @A AND Name IN (@B, @C, @D)")
+        Dim com = sql.Select.Column("*").From("TestTable").Where("ID", SqlDbType.Int, SQLBuilder.QueryOperation.Equal, 1).Where("Name", SqlDbType.NVarChar, SQLBuilder.QueryOperation.IN, names).Testing().GetSqlCommand
+
+        Assert.AreEqual(com.Parameters(0).ParameterName, "A")
+        Assert.AreEqual(com.Parameters(1).ParameterName, "B")
+        Assert.AreEqual(com.Parameters(2).ParameterName, "C")
+        Assert.AreEqual(com.Parameters(3).ParameterName, "D")
 
     End Sub
 

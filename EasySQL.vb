@@ -59,7 +59,7 @@ Public Class SQLBuilder
 
     Public Function [Select]() As SQLBuilder
         Dim sql As New SQLBuilder
-        InheritParameters(sql)
+        'InheritParameters(sql)
         sql._Type = QueryType.Select
         'sql._Database = Me._Database
         'sql._Command = Me._Command
@@ -68,7 +68,7 @@ Public Class SQLBuilder
     End Function
     Public Function [Select](Columns As String) As SQLBuilder
         Dim sql As New SQLBuilder
-        InheritParameters(sql)
+        'InheritParameters(sql)
         sql._Type = QueryType.Select
         'sql._Database = Me._Database
         'sql._Command = Me._Command
@@ -86,7 +86,7 @@ Public Class SQLBuilder
     End Function
     Public Function Insert() As SQLBuilder
         Dim sql As New SQLBuilder
-        InheritParameters(sql)
+        'InheritParameters(sql)
         sql._Type = QueryType.Insert
         'sql._Database = Me._Database
         'sql._Command = Me._Command
@@ -95,7 +95,7 @@ Public Class SQLBuilder
     End Function
     Public Function Delete() As SQLBuilder
         Dim sql As New SQLBuilder
-        InheritParameters(sql)
+        'InheritParameters(sql)
         sql._Type = QueryType.Delete
         'sql._Database = Me._Database
         'sql._Command = Me._Command
@@ -105,7 +105,7 @@ Public Class SQLBuilder
     End Function
     Public Function Update() As SQLBuilder
         Dim sql As New SQLBuilder
-        InheritParameters(sql)
+        'InheritParameters(sql)
         sql._Type = QueryType.Update
         'sql._Database = Me._Database
         'sql._Command = Me._Command
@@ -255,6 +255,12 @@ Public Class SQLBuilder
 
     Private Function GetSecureName() As String
         SecureParameterNamesLocation += 1
+
+        If SecureParameterNames.Length < SecureParameterNamesLocation - 1 Then
+            Throw New Exception("EasySQL: Too many parameters (MAX: " & SecureParameterNames.Length & ")")
+        End If
+
+
         Return SecureParameterNames(SecureParameterNamesLocation - 1)
     End Function
 
@@ -503,40 +509,42 @@ Public Class SQLBuilder
 
                     If col.Operation = QueryOperation.IN Then
                         Dim items
-                        Try
-
-                            Select Case col.Value.GetType.ToString
-                                Case "System.Collections.Generic.List´1[System.String]"
-                                    items = CType(col.Value, List(Of String))
-                                    For i As Integer = 0 To items.Count - 1
-                                        col.ParameterNames.Add(GetSecureName())
-                                    Next
-                                Case "System.Collections.Generic.List´1[System.Int32]"
-                                    items = CType(col.Value, List(Of Integer))
-                                    For i As Integer = 0 To items.Count - 1
-                                        col.ParameterNames.Add(GetSecureName())
-                                    Next
-                                Case "System.Collections.Generic.List´1[System.Object]"
-                                    items = CType(col.Value, List(Of Object))
-                                    For i As Integer = 0 To items.Count - 1
-                                        col.ParameterNames.Add(GetSecureName())
-                                    Next
-                                Case "System.String[]"
-                                    items = CType(col.Value, String())
-                                    For i As Integer = 0 To items.Length - 1
-                                        col.ParameterNames.Add(GetSecureName())
-                                    Next
-                                Case "System.Int32[]"
-                                    items = CType(col.Value, Integer())
-                                    For i As Integer = 0 To items.Length - 1
-                                        col.ParameterNames.Add(GetSecureName())
-                                    Next
-                            End Select
+                        'Throw New Exception(col.Value.GetType.ToString)
+                        'Try
 
 
-                        Catch ex As Exception
-                            Throw New Exception("EasySQL: you can only use types List(Of String), List(Of Integer), List(Of Object), Integer(), String() (QueryOperation.IN)")
-                        End Try
+                        Select Case col.Value.GetType.ToString
+                            Case "System.Collections.Generic.List`1[System.String]"
+                                items = CType(col.Value, List(Of String))
+                                For i As Integer = 0 To items.Count - 1
+                                    col.ParameterNames.Add(GetSecureName())
+                                Next
+                            Case "System.Collections.Generic.List´1[System.Int32]"
+                                items = CType(col.Value, List(Of Integer))
+                                For i As Integer = 0 To items.Count - 1
+                                    col.ParameterNames.Add(GetSecureName())
+                                Next
+                            Case "System.Collections.Generic.List´1[System.Object]"
+                                items = CType(col.Value, List(Of Object))
+                                For i As Integer = 0 To items.Count - 1
+                                    col.ParameterNames.Add(GetSecureName())
+                                Next
+                            Case "System.String[]"
+                                items = CType(col.Value, String())
+                                For i As Integer = 0 To items.Length - 1
+                                    col.ParameterNames.Add(GetSecureName())
+                                Next
+                            Case "System.Int32[]"
+                                items = CType(col.Value, Integer())
+                                For i As Integer = 0 To items.Length - 1
+                                    col.ParameterNames.Add(GetSecureName())
+                                Next
+                        End Select
+
+
+                        'Catch ex As Exception
+                        '    Throw New Exception("EasySQL: you can only use types List(Of String), List(Of Integer), List(Of Object), Integer(), String() (QueryOperation.IN)")
+                        'End Try
 
 
                         'Try
@@ -593,7 +601,11 @@ Public Class SQLBuilder
 
     Public Function GetSqlCommand() As SqlCommand
 
-        _Command = New SqlCommand(GetSQL, _Database)
+        If _Test = True Then
+            _Command = New SqlCommand(GetSQL)
+        Else
+            _Command = New SqlCommand(GetSQL, _Database)
+        End If
 
         For Each col In _Columns
             If col.NoValue = False Then
@@ -607,31 +619,36 @@ Public Class SQLBuilder
                         Case "System.Collections.Generic.List´1[System.String]"
                             Dim items As List(Of String) = CType(col.Value, List(Of String))
 
-                            For i As Integer = 0 To col.ParameterNames.Count - 1
+                            'For i As Integer = 0 To col.ParameterNames.Count - 1
+                            For i As Integer = 0 To items.Count - 1
                                 _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterNames(i), .SqlDbType = col.Type, .Value = items(i)})
                             Next
                         Case "System.Collections.Generic.List´1[System.Int32]"
                             Dim items As List(Of Integer) = CType(col.Value, List(Of Integer))
 
-                            For i As Integer = 0 To col.ParameterNames.Count - 1
+                            'For i As Integer = 0 To col.ParameterNames.Count - 1
+                            For i As Integer = 0 To items.Count - 1
                                 _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterNames(i), .SqlDbType = col.Type, .Value = items(i)})
                             Next
                         Case "System.Collections.Generic.List´1[System.Object]"
                             Dim items As List(Of Object) = CType(col.Value, List(Of Object))
 
-                            For i As Integer = 0 To col.ParameterNames.Count - 1
+                            'For i As Integer = 0 To col.ParameterNames.Count - 1
+                            For i As Integer = 0 To items.Count - 1
                                 _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterNames(i), .SqlDbType = col.Type, .Value = items(i)})
                             Next
                         Case "System.String[]"
                             Dim items As String() = CType(col.Value, String())
 
-                            For i As Integer = 0 To col.ParameterNames.Count - 1
+                            'For i As Integer = 0 To col.ParameterNames.Count - 1
+                            For i As Integer = 0 To items.Length - 1
                                 _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterNames(i), .SqlDbType = col.Type, .Value = items(i)})
                             Next
                         Case "System.Int32[]"
                             Dim items As Integer() = CType(col.Value, Integer())
 
-                            For i As Integer = 0 To col.ParameterNames.Count - 1
+                            'For i As Integer = 0 To col.ParameterNames.Count - 1
+                            For i As Integer = 0 To items.Length - 1
                                 _Command.Parameters.Add(New SqlParameter With {.ParameterName = col.ParameterNames(i), .SqlDbType = col.Type, .Value = items(i)})
                             Next
                     End Select
